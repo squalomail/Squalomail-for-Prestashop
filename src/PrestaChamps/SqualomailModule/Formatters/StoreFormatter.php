@@ -60,7 +60,7 @@ class StoreFormatter
             $formatted_store_address['state'] = $store_state;
         }
         $data = array(
-            'id' => (string)$this->store->id,
+            'id' => \Configuration::get(\SqualomailModuleConfig::SQUALOMAIL_API_KEY),
             'name' => $this->store->name,
             'address' => $formatted_store_address,
             'list_id' => \Configuration::get(\SqualomailModuleConfig::SQUALOMAIL_LIST_ID),

@@ -53,6 +53,8 @@ class StoreSyncCommand extends BaseApiCommand
 
     public function execute()
     {
+        $shopId = \Configuration::get(\SqualomailModuleConfig::SQUALOMAIL_API_KEY);
+
         $this->responses = array();
         if ($this->syncMode == self::SYNC_MODE_REGULAR) {
             foreach ($this->stores as $storeId) {
@@ -64,10 +66,10 @@ class StoreSyncCommand extends BaseApiCommand
                     $data = $formatted->format();
                     // SQM does not support changing the list id, so it must be unset
                     unset($data['list_id']);
-                    $this->squalomail->patch("/ecommerce/stores/{$storeId}", $data);
+                    $this->squalomail->patch("/ecommerce/stores/{$shopId}", $data);
                 }
                 if ($this->method === self::SYNC_METHOD_DELETE) {
-                    $this->squalomail->delete("/ecommerce/stores/{$storeId}");
+                    $this->squalomail->delete("/ecommerce/stores/{$shopId}");
                 }
                 $this->responses[] = $this->squalomail->getLastResponse();
             }
@@ -77,16 +79,16 @@ class StoreSyncCommand extends BaseApiCommand
             foreach ($this->stores as $storeId) {
                 $formatted = new StoreFormatter(new \Shop($storeId), $this->context);
                 if ($this->method === 'POST') {
-                    $batch->post("{$this->batchPrefix}_{$storeId}", '/ecommerce/stores', $formatted->format());
+                    $batch->post("{$this->batchPrefix}_{$shopId}", '/ecommerce/stores', $formatted->format());
                 }
                 if ($this->method === 'PATCH') {
                     $data = $formatted->format();
                     // SQM does not support changing the list id, so it must be unset
                     unset($data['list_id']);
-                    $batch->patch("{$this->batchPrefix}_{$storeId}", "/ecommerce/stores/{$storeId}", $data);
+                    $batch->patch("{$this->batchPrefix}_{$shopId}", "/ecommerce/stores/{$shopId}", $data);
                 }
                 if ($this->method === 'DELETE') {
-                    $batch->delete("{$this->batchPrefix}_{$storeId}", "/ecommerce/stores/{$storeId}");
+                    $batch->delete("{$this->batchPrefix}_{$shopId}", "/ecommerce/stores/{$shopId}");
                 }
                 $this->responses[] = $this->squalomail->getLastResponse();
             }

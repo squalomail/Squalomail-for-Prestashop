@@ -85,7 +85,8 @@ class FooterBefore
      */
     protected function getListIdFromStore()
     {
-        $listId = $this->squaloMail->get("/ecommerce/stores/{$this->context->shop->id}", array('fields' => 'list_id'));
+        $shopId = \Configuration::get(\SqualomailModuleConfig::SQUALOMAIL_API_KEY);
+        $listId = $this->squaloMail->get("/ecommerce/stores/{$shopId}", array('fields' => 'list_id'));
 
         if (isset($listId['list_id']) && $this->squaloMail->success()) {
             return $listId['list_id'];

@@ -97,16 +97,18 @@ class CategoriesSyncCommand extends BaseApiCommand
                 $this->context
             );
 
+            $shopId = \Configuration::get(\SqualomailModuleConfig::SQUALOMAIL_API_KEY);
+
             if ($this->method === self::SYNC_METHOD_POST) {
                 if ($this->syncMode == self::SYNC_MODE_BATCH) {
                     $this->batch->post(
                         $this->batchPrefix . '_' . $key,
-                        "/ecommerce/stores/{$this->context->shop->id}/categories",
+                        "/ecommerce/stores/{$shopId}/categories",
                         $categoryFormatter->format()
                     );
                 } else {
                     $this->commands[$category->id] = array(
-                        'route' => "/ecommerce/stores/{$this->context->shop->id}/categories",
+                        'route' => "/ecommerce/stores/{$shopId}/categories",
                         'data' => $categoryFormatter->format(),
                     );
                 }
@@ -114,12 +116,12 @@ class CategoriesSyncCommand extends BaseApiCommand
                 if ($this->syncMode == self::SYNC_MODE_BATCH) {
                     $this->batch->put(
                         $this->batchPrefix . '_' . $key,
-                        "/ecommerce/stores/{$this->context->shop->id}/categories/{$category->id}",
+                        "/ecommerce/stores/{$shopId}/categories/{$category->id}",
                         $categoryFormatter->format()
                     );
                 } else {
                     $this->commands[$category->id] = array(
-                        'route' => "/ecommerce/stores/{$this->context->shop->id}/categories/{$category->id}",
+                        'route' => "/ecommerce/stores/{$shopId}/categories/{$category->id}",
                         'data' => $categoryFormatter->format(),
                     );
                 }
@@ -127,11 +129,11 @@ class CategoriesSyncCommand extends BaseApiCommand
                 if ($this->syncMode == self::SYNC_MODE_BATCH) {
                     $this->batch->delete(
                         $this->batchPrefix . '_' . $key,
-                        "/ecommerce/stores/{$this->context->shop->id}/categories/{$category->id}"
+                        "/ecommerce/stores/{$shopId}/categories/{$category->id}"
                     );
                 } else {
                     $this->commands[$category->id] = array(
-                        'route' => "/ecommerce/stores/{$this->context->shop->id}/categories/{$category->id}",
+                        'route' => "/ecommerce/stores/{$shopId}/categories/{$category->id}",
                         'data' => array(),
                     );
                 }

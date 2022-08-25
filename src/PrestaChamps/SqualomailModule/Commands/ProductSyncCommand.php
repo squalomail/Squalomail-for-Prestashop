@@ -95,16 +95,19 @@ class ProductSyncCommand extends BaseApiCommand
                 $category,
                 $this->context
             );
+
+            $shopId = \Configuration::get(\SqualomailModuleConfig::SQUALOMAIL_API_KEY);
+
             if ($this->method === self::SYNC_METHOD_POST) {
                 if ($this->syncMode == self::SYNC_MODE_BATCH) {
                     $this->batch->post(
                         $this->batchPrefix . '_' . $key,
-                        "/ecommerce/stores/{$this->context->shop->id}/products",
+                        "/ecommerce/stores/{$shopId}/products",
                         $productFormatter->format()
                     );
                 } else {
                     $this->commands[$product->id] = array(
-                        'route' => "/ecommerce/stores/{$this->context->shop->id}/products",
+                        'route' => "/ecommerce/stores/{$shopId}/products",
                         'data' => $productFormatter->format(),
                     );
                 }
@@ -112,12 +115,12 @@ class ProductSyncCommand extends BaseApiCommand
                 if ($this->syncMode == self::SYNC_MODE_BATCH) {
                     $this->batch->patch(
                         $this->batchPrefix . '_' . $key,
-                        "/ecommerce/stores/{$this->context->shop->id}/products/{$product->id}",
+                        "/ecommerce/stores/{$shopId}/products/{$product->id}",
                         $productFormatter->format()
                     );
                 } else {
                     $this->commands[$product->id] = array(
-                        'route' => "/ecommerce/stores/{$this->context->shop->id}/products/{$product->id}",
+                        'route' => "/ecommerce/stores/{$shopId}/products/{$product->id}",
                         'data' => $productFormatter->format(),
                     );
                 }
@@ -125,11 +128,11 @@ class ProductSyncCommand extends BaseApiCommand
                 if ($this->syncMode == self::SYNC_MODE_BATCH) {
                     $this->batch->delete(
                         $this->batchPrefix . '_' . $key,
-                        "/ecommerce/stores/{$this->context->shop->id}/products/{$product->id}"
+                        "/ecommerce/stores/{$shopId}/products/{$product->id}"
                     );
                 } else {
                     $this->commands[$product->id] = array(
-                        'route' => "/ecommerce/stores/{$this->context->shop->id}/products/{$product->id}",
+                        'route' => "/ecommerce/stores/{$shopId}/products/{$product->id}",
                         'data' => array(),
                     );
                 }

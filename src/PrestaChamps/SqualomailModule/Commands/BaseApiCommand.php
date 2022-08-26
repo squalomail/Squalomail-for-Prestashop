@@ -100,7 +100,8 @@ abstract class BaseApiCommand
      */
     protected function getListIdFromStore()
     {
-        $listId = $this->squalomail->get("/ecommerce/stores/{$this->context->shop->id}", array('fields' => 'list_id'));
+        $shopId = \Configuration::get(\SqualomailModuleConfig::SQUALOMAIL_API_KEY);
+        $listId = $this->squalomail->get("/ecommerce/stores/{$shopId}", array('fields' => 'list_id'));
 
         if (isset($listId['list_id']) && $this->squalomail->success()) {
             return $listId['list_id'];

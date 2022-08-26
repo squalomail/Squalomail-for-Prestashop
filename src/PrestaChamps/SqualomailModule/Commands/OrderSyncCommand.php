@@ -70,6 +70,8 @@ class OrderSyncCommand extends BaseApiCommand
      */
     protected function buildOrders()
     {
+        $shopId = \Configuration::get(\SqualomailModuleConfig::SQUALOMAIL_API_KEY);
+
         foreach ($this->orders as $orderId) {
             $order = new \Order($orderId, $this->context->language->id);
             $shippingAddress = new \Address($order->id_address_delivery, $this->context->language->id);
@@ -85,12 +87,12 @@ class OrderSyncCommand extends BaseApiCommand
                 );
                 if ($this->getOrderExists($orderId)) {
                     $this->squalomail->patch(
-                        "/ecommerce/stores/{$this->context->shop->id}/orders/{$orderId}",
+                        "/ecommerce/stores/{$shopId}/orders/{$orderId}",
                         $formatter->format()
                     );
                 } else {
                     $this->squalomail->post(
-                        "/ecommerce/stores/{$this->context->shop->id}/orders",
+                        "/ecommerce/stores/{$shopId}/orders",
                         $formatter->format()
                     );
                 }
@@ -138,8 +140,10 @@ class OrderSyncCommand extends BaseApiCommand
      */
     protected function getCustomerExists(\Customer $customer)
     {
+        $shopId = \Configuration::get(\SqualomailModuleConfig::SQUALOMAIL_API_KEY);
+
         $this->squalomail->get(
-            "/ecommerce/stores/{$this->context->shop->id}/customers/{$customer->id}",
+            "/ecommerce/stores/{$shopId}/customers/{$customer->id}",
             array('fields' => array('opt_in_status'))
         );
 
@@ -152,8 +156,10 @@ class OrderSyncCommand extends BaseApiCommand
 
     protected function getOrderExists($orderId)
     {
+        $shopId = \Configuration::get(\SqualomailModuleConfig::SQUALOMAIL_API_KEY);
+
         $this->squalomail->get(
-            "/ecommerce/stores/{$this->context->shop->id}/orders/{$orderId}",
+            "/ecommerce/stores/{$shopId}/orders/{$orderId}",
             array('fields' => array('id'))
         );
 

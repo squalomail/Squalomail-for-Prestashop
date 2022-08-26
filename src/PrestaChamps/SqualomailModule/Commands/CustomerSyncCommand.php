@@ -74,6 +74,8 @@ class CustomerSyncCommand extends BaseApiCommand
      */
     public function execute()
     {
+        $shopId = \Configuration::get(\SqualomailModuleConfig::SQUALOMAIL_API_KEY);
+
         $this->responses = array();
         if ((int)$this->syncMode === self::SYNC_MODE_REGULAR) {
             $listId = $this->getListIdFromStore();
@@ -95,7 +97,7 @@ class CustomerSyncCommand extends BaseApiCommand
 
                     $data['opt_in_status'] = ($customer->newsletter == '1') ? true : false;
                     $this->squalomail->put(
-                        "/ecommerce/stores/{$this->context->shop->id}/customers/{$customerId}",
+                        "/ecommerce/stores/{$shopId}/customers/{$customerId}",
                         $data
                     );
                     $hash = md5(Tools::strtolower($customer->email));
@@ -104,13 +106,13 @@ class CustomerSyncCommand extends BaseApiCommand
                 if ($this->method === self::SYNC_METHOD_PATCH) {
                     $data = $formatted->format();
                     $this->squalomail->put(
-                        "/ecommerce/stores/{$this->context->shop->id}/customers/{$customerId}",
+                        "/ecommerce/stores/{$shopId}/customers/{$customerId}",
                         $data
                     );
                 }
                 if ($this->method === self::SYNC_METHOD_DELETE) {
                     $this->squalomail->delete(
-                        "/ecommerce/stores/{$this->context->shop->id}/customers/{$customerId}"
+                        "/ecommerce/stores/{$shopId}/customers/{$customerId}"
                     );
                 }
                 $this->responses[] = $this->squalomail->getLastResponse();
@@ -124,7 +126,7 @@ class CustomerSyncCommand extends BaseApiCommand
                 if ($this->method === 'POST') {
                     $batch->put(
                         "{$this->batchPrefix}_{$customerId}",
-                        "/ecommerce/stores/{$this->context->shop->id}/customers/{$customerId}",
+                        "/ecommerce/stores/{$shopId}/customers/{$customerId}",
                         $formatted->format()
                     );
                 }
@@ -132,14 +134,14 @@ class CustomerSyncCommand extends BaseApiCommand
                     $data = $formatted->format();
                     $batch->put(
                         "{$this->batchPrefix}_{$customerId}",
-                        "/ecommerce/stores/{$this->context->shop->id}/customers/{$customerId}",
+                        "/ecommerce/stores/{$shopId}/customers/{$customerId}",
                         $data
                     );
                 }
                 if ($this->method === 'DELETE') {
                     $batch->delete(
                         "{$this->batchPrefix}_{$customerId}",
-                        "/ecommerce/stores/{$this->context->shop->id}/customers/{$customerId}"
+                        "/ecommerce/stores/{$shopId}/customers/{$customerId}"
                     );
                 }
                 $this->responses[] = $this->squalomail->getLastResponse();

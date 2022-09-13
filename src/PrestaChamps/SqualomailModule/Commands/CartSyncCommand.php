@@ -54,6 +54,8 @@ class CartSyncCommand extends BaseApiCommand
      */
     public function execute()
     {
+        $shopId = \Configuration::get(\SqualomailModuleConfig::SQUALOMAIL_API_KEY);
+
         $this->responses = array();
         if ((int)$this->syncMode === self::SYNC_MODE_REGULAR) {
             foreach ($this->cartIds as $cartId) {
@@ -62,19 +64,19 @@ class CartSyncCommand extends BaseApiCommand
                 $formatted = (new CartFormatter($cart, $customer, $this->context))->format();
                 if ($this->method === self::SYNC_METHOD_POST) {
                     $this->squalomail->post(
-                        "/ecommerce/stores/{$this->context->shop->id}/carts",
+                        "/ecommerce/stores/{$shopId}/carts",
                         $formatted
                     );
                 }
                 if ($this->method === self::SYNC_METHOD_PATCH) {
                     $this->squalomail->patch(
-                        "/ecommerce/stores/{$this->context->shop->id}/carts/{$cart->id}",
+                        "/ecommerce/stores/{$shopId}/carts/{$cart->id}",
                         $formatted
                     );
                 }
                 if ($this->method === self::SYNC_METHOD_DELETE) {
                     $this->squalomail->delete(
-                        "/ecommerce/stores/{$this->context->shop->id}/carts/{$cart->id}"
+                        "/ecommerce/stores/{$shopId}/carts/{$cart->id}"
                     );
                 }
                 $this->responses[] = $this->squalomail->getLastResponse();
@@ -90,8 +92,10 @@ class CartSyncCommand extends BaseApiCommand
 
     protected function getCartExists($cartId)
     {
+        $shopId = \Configuration::get(\SqualomailModuleConfig::SQUALOMAIL_API_KEY);
+
         $this->squalomail->get(
-            "/ecommerce/stores/{$this->context->shop->id}/carts/{$cartId}",
+            "/ecommerce/stores/{$shopId}/carts/{$cartId}",
             array('fields' => array('id'))
         );
 

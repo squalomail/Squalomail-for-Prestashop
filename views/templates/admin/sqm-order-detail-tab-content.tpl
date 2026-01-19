@@ -16,7 +16,7 @@
  * @license   commercial
  *}
 <div class="tab-pane" id="squalomail-order-detail">
-    <h4 class="visible-print">{l s='SqualoMail detail' mod='squalomailmodule'}</h4>
+    <h4 class="visible-print">{l s='Squalo detail' mod='squalomailmodule'}</h4>
     <div class="table-responsive">
         <table class="table table-bordered">
             <thead>

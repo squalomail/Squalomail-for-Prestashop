@@ -36,9 +36,9 @@ class AdminSqualomailModuleListsController extends \PrestaChamps\SqualomailModul
         if ($list_name) {
             $this->action = null;
             if ($this->createSqualomailList($list_name)) {
-                $this->confirmations[] = $this->l('List created successfully');
+                $this->confirmations[] = $this->trans('List created successfully');
             } else {
-                $this->errors[] = $this->l("Oups! Failed to create list: {$this->squalomail->getLastError()}");
+                $this->errors[] = $this->trans("Oups! Failed to create list: {$this->squalomail->getLastError()}");
             }
         }
     }

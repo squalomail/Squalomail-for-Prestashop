@@ -20,7 +20,7 @@
         {l s='Syncing promo-codes, please wait' mod='squalomailmodule'}
     </div>
     <div class="alert alert-success alert-sqm hidden" id="promo-code-sync-completed">
-        {l s='The batch operation of syncing the promo-codes has been sent to the Squalomail servers.' mod='squalomailmodule'}
+        {l s='The batch operation of syncing the promo-codes has been sent to the Squalo servers.' mod='squalomailmodule'}
     </div>
     <div class="alert alert-error hidden" id="promo-code-sync-error">
         {l s='Error during promo-code sync' mod='squalomailmodule'}

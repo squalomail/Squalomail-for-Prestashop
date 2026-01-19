@@ -22,7 +22,7 @@
     <div class="panel-body">
         <div class="alert alert-danger">
             <p>
-                {l s='Delete all e-commerce data from your Squalomail account' mod='squalomailmodule'}
+                {l s='Delete all e-commerce data from your Squalo account' mod='squalomailmodule'}
             </p>
             <p>
                 {l s='Once you delete a these datas, there is no going back. Please be certain.' mod='squalomailmodule'}

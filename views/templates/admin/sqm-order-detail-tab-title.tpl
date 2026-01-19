@@ -19,6 +19,6 @@
     <!--suppress HtmlUnknownAnchorTarget -->
     <a href="#squalomail-order-detail">
         <i class="icon-time"></i>
-        {l s='SqualoMail detail' mod='squalomailmodule'} <span class="badge" style="opacity: 0">1</span>
+        {l s='Squalo detail' mod='squalomailmodule'} <span class="badge" style="opacity: 0">1</span>
     </a>
 </li>

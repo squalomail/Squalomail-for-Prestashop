@@ -19,7 +19,7 @@ $(document).ready(function () {
   var x = $('#configuration_form_submit_btn').text();
   if(x.indexOf('Disconnect') !== -1) {
     $('#configuration_form').submit(function() {
-      return confirm("This will disable your SqualoMail store and break any existing automations, are you sure?");
+      return confirm("This will disable your Squalo store and break any existing automations, are you sure?");
      });
   }
 });

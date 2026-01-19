@@ -16,7 +16,7 @@
  * @license   commercial
  *}
 <div class="alert alert-info" role="alert">
-    {l s='In this area you will be able to sync information from your store with Squalomail (products, custmers, etc.). If you have multistore enabled, please make sure you have selected the correct store you want to synchronize.' mod='squalomailmodule'}
+    {l s='In this area you will be able to sync information from your store with Squalo (products, custmers, etc.). If you have multistore enabled, please make sure you have selected the correct store you want to synchronize.' mod='squalomailmodule'}
 </div>
 {include file="./_product.tpl"}
 {include file="./_store.tpl"}

@@ -24,7 +24,7 @@
            placeholder="{l s='API key' mod='squalomailmodule'}" required="" value="{$apiKey}">
     <a class="btn btn-default" id="oauth2-start">
         {if empty($apiKey) && empty($sqmEmail)}
-            Log in to Squalomail
+            Log in to Squalo
         {else}
             Log in as somebody else
         {/if}

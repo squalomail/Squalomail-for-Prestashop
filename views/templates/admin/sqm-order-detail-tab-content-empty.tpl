@@ -16,10 +16,10 @@
  * @license   commercial
  *}
 <div class="tab-pane" id="squalomail-order-detail">
-    <h4 class="visible-print">{l s='SqualoMail detail' mod='squalomailmodule'}</h4>
+    <h4 class="visible-print">{l s='Squalo detail' mod='squalomailmodule'}</h4>
     <div class="table-responsive">
         <div class="alert alert-info">
-            {l s='There is no Squalomail order associated to this order' mod='squalomailmodule'}
+            {l s='There is no Squalo order associated to this order' mod='squalomailmodule'}
         </div>
     </div>
 </div>

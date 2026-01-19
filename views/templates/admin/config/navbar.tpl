@@ -34,7 +34,7 @@
                 <button type="button" class="btn btn-primary btn-sqm dropdown-toggle" data-toggle="dropdown" aria-haspopup="true"
                         aria-expanded="false">
                     <i class="icon icon-folder-open-o" aria-hidden="true"></i>
-                    {l s='Squalomail Objects' mod='squalomailmodule'}
+                    {l s='Squalo Objects' mod='squalomailmodule'}
                     <span class="caret"></span>
                 </button>
                 <ul class="dropdown-menu">

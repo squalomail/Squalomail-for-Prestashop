@@ -68,7 +68,7 @@ class AdminSqualomailModuleConfigController extends ModuleAdminController
         Configuration::updateValue(SqualomailModuleConfig::SQUALOMAIL_SCRIPT_VERIFIED, '0');
         Configuration::loadConfiguration();
 
-        $this->confirmations[] = $this->l('Configuration updated');
+        $this->confirmations[] = $this->trans('Configuration updated');
     }
 
     public function processDeleteEcommerceData()
@@ -83,7 +83,7 @@ class AdminSqualomailModuleConfigController extends ModuleAdminController
             $command->setMethod($command::SYNC_METHOD_DELETE);
             $command->setSyncMode($command::SYNC_MODE_REGULAR);
             $command->execute();
-            $this->confirmations[] = $this->l('E-commerce data has been deleted');
+            $this->confirmations[] = $this->trans('E-commerce data has been deleted');
         } catch (Exception $exception) {
             $this->errors[] = "Error during deleting e-commerce data";
         }
@@ -99,12 +99,12 @@ class AdminSqualomailModuleConfigController extends ModuleAdminController
         $orderStates = OrderState::getOrderStates($this->context->language->id);
         $fields_form = array(
             'form' => array(
-                'legend' => array('title' => $this->l('Order state mapping'), 'icon' => 'icon-envelope'),
+                'legend' => array('title' => $this->trans('Order state mapping'), 'icon' => 'icon-envelope'),
                 'input'  => array(
                     array(
                         'type'     => 'select',
                         'multiple' => true,
-                        'label'    => $this->l('Status for pending'),
+                        'label'    => $this->trans('Status for pending'),
                         'name'     => SqualomailModuleConfig::STATUSES_FOR_PENDING,
                         'size'     => count($orderStates),
                         'options'  => array(
@@ -116,7 +116,7 @@ class AdminSqualomailModuleConfigController extends ModuleAdminController
                     array(
                         'type'     => 'select',
                         'multiple' => true,
-                        'label'    => $this->l('Status for refunded'),
+                        'label'    => $this->trans('Status for refunded'),
                         'name'     => SqualomailModuleConfig::STATUSES_FOR_REFUNDED,
                         'size'     => count($orderStates),
                         'options'  => array(
@@ -128,7 +128,7 @@ class AdminSqualomailModuleConfigController extends ModuleAdminController
                     array(
                         'type'     => 'select',
                         'multiple' => true,
-                        'label'    => $this->l('Status for cancelled'),
+                        'label'    => $this->trans('Status for cancelled'),
                         'name'     => SqualomailModuleConfig::STATUSES_FOR_CANCELLED,
                         'size'     => count($orderStates),
                         'options'  => array(
@@ -140,7 +140,7 @@ class AdminSqualomailModuleConfigController extends ModuleAdminController
                     array(
                         'type'     => 'select',
                         'multiple' => true,
-                        'label'    => $this->l('Status for shipped'),
+                        'label'    => $this->trans('Status for shipped'),
                         'name'     => SqualomailModuleConfig::STATUSES_FOR_SHIPPED,
                         'size'     => count($orderStates),
                         'options'  => array(
@@ -152,7 +152,7 @@ class AdminSqualomailModuleConfigController extends ModuleAdminController
                     array(
                         'type'     => 'select',
                         'multiple' => true,
-                        'label'    => $this->l('Status for paid'),
+                        'label'    => $this->trans('Status for paid'),
                         'name'     => SqualomailModuleConfig::STATUSES_FOR_PAID,
                         'size'     => count($orderStates),
                         'options'  => array(
@@ -163,7 +163,7 @@ class AdminSqualomailModuleConfigController extends ModuleAdminController
                     ),
                 ),
                 'submit' => array(
-                    'title' => $this->l('Save'),
+                    'title' => $this->trans('Save'),
                     'class' => 'btn btn-primary btn-sqm pull-right',
                     'id'    => 'state-save-btn'
                 ),
@@ -205,12 +205,12 @@ class AdminSqualomailModuleConfigController extends ModuleAdminController
         }
         $fields_form = array(
             'form' => array(
-                'legend' => array('title' => $this->l('General settings'), 'icon' => 'icon-envelope'),
+                'legend' => array('title' => $this->trans('General settings'), 'icon' => 'icon-envelope'),
                 'input'  => array(
                     array(
                         'type'     => 'select',
                         'multiple' => false,
-                        'label'    => $this->l('Product image size'),
+                        'label'    => $this->trans('Product image size'),
                         'name'     => SqualomailModuleConfig::PRODUCT_IMAGE_SIZE,
                         'desc'     => $this->module->l('Remember to resync products if you change this'),
                         'options'  => array(
@@ -221,15 +221,15 @@ class AdminSqualomailModuleConfigController extends ModuleAdminController
                     ),
                     //                    [
                     //                        'type'     => 'text',
-                    //                        'label'    => $this->l('API Key'),
+                    //                        'label'    => $this->trans('API Key'),
                     //                        'name'     => SqualomailModuleConfig::SQUALOMAIL_API_KEY,
                     //                        'lang'     => false,
                     //                        'required' => true,
-                    //                        'hint'     => $this->l('API Key'),
+                    //                        'hint'     => $this->trans('API Key'),
                     //                    ],
                 ),
                 'submit' => array(
-                    'title' => $this->l('Save'),
+                    'title' => $this->trans('Save'),
                     'class' => 'btn btn-primary btn-sqm pull-right',
                 ),
             ),

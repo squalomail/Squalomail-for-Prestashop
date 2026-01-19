@@ -20,7 +20,7 @@
         {l s='Syncing orders, please wait' mod='squalomailmodule'}
     </div>
     <div class="alert alert-success alert-sqm hidden" id="order-sync-completed">
-        {l s='The batch operation of syncing the orders has been sent to the Squalomail servers. The setup is now complete' mod='squalomailmodule'}
+        {l s='The batch operation of syncing the orders has been sent to the Squalo servers. The setup is now complete' mod='squalomailmodule'}
     </div>
     <div class="alert alert-error hidden" id="order-sync-error">
         {l s='Error during orders sync' mod='squalomailmodule'}

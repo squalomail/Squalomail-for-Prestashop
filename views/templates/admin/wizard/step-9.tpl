@@ -20,7 +20,7 @@
         {l s='Syncing categories, please wait' mod='squalomailmodule'}
     </div>
     <div class="alert alert-success alert-sqm hidden" id="categories-sync-completed">
-        {l s='The batch operation of syncing the categories has been sent to the Squalomail servers. The setup is now complete' mod='squalomailmodule'}
+        {l s='The batch operation of syncing the categories has been sent to the Squalo servers. The setup is now complete' mod='squalomailmodule'}
     </div>
     <div class="alert alert-error hidden" id="categories-sync-error">
         {l s='Error during category sync' mod='squalomailmodule'}

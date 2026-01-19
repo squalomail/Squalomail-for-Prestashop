@@ -16,7 +16,7 @@
  * @license   commercial
  *}
 <div class="panel">
-    <h3>SqualoMail Cart info</h3>
+    <h3>Squalo Cart info</h3>
     <table class="table table-bordered">
         <thead>
         <tr>

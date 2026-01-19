@@ -18,7 +18,7 @@
 <div id="setup-wizard">
     <ul>
         <li>
-            <a href="#step-1">{l s='Log-in to Squalomail' mod='squalomailmodule'}</a>
+            <a href="#step-1">{l s='Log-in to Squalo' mod='squalomailmodule'}</a>
         </li>
         <li>
             <a href="#step-2">{l s='Select list' mod='squalomailmodule'}</a>

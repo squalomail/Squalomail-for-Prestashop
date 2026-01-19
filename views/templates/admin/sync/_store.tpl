@@ -22,7 +22,7 @@
     <div class="panel-body">
         <form>
             <h4>
-                {l s='Connect your Prestashop to Squalomail to take advantage of powerful reporting and personalization features and to learn more about your customers.' mod='squalomailmodule'}
+                {l s='Connect your Prestashop to Squalo to take advantage of powerful reporting and personalization features and to learn more about your customers.' mod='squalomailmodule'}
             </h4>
             <br>
             {include file="./_radio-btns.tpl"}

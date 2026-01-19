@@ -39,7 +39,7 @@
         <input type="radio" name="method" value="delete">
         DELETE
         <small class="text-muted">
-            {l s='All items of this type will be deleted from Squalomail' mod='squalomailmodule'}
+            {l s='All items of this type will be deleted from Squalo' mod='squalomailmodule'}
         </small>
     </label>
 </div>
@@ -49,7 +49,7 @@
         <input type="radio" name="syncMode" value="batch" checked="checked">
         Batch
         <small class="text-muted">
-            {l s='Faster process where large batches of items are sent to Squalomail. Progress will be displayed only when an entire batch has been processed.' mod='squalomailmodule'}
+            {l s='Faster process where large batches of items are sent to Squalo. Progress will be displayed only when an entire batch has been processed.' mod='squalomailmodule'}
         </small>
     </label>
 </div>

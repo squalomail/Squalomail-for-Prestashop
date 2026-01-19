@@ -22,7 +22,7 @@
     <div class="panel-body">
         <form>
             <h4>
-                {l s='Orders represent successful e-commerce transactions, and this data can be used to provide more detailed campaign reports, track sales, and personalize emails to your targeted consumers, and view other e-commerce data in your Squalomail account.' mod='squalomailmodule'}
+                {l s='Orders represent successful e-commerce transactions, and this data can be used to provide more detailed campaign reports, track sales, and personalize emails to your targeted consumers, and view other e-commerce data in your Squalo account.' mod='squalomailmodule'}
             </h4>
             <br>
             {include file="./_radio-btns.tpl"}

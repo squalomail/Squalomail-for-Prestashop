@@ -1,7 +1,7 @@
-# Squalomail for PrestaShop Module
+# Squalo for PrestaShop Module
 Connect your store, sell more stuff. 
 
-When you connect your PrestaShop store to Squalomail, you increase the power of both. A customizable e-commerce solution like PrestaShop is an excellent way to personalize your marketing and encourage that growth. And, you can add the Squalomail module to your shop free of cost. 
+When you connect your PrestaShop store to Squalo, you increase the power of both. A customizable e-commerce solution like PrestaShop is an excellent way to personalize your marketing and encourage that growth. And, you can add the Squalo module to your shop free of cost. 
 
 ## Features 
 
@@ -10,8 +10,8 @@ Create abandoned cart automations, win back lapsed customers, and follow up post
 Showcase product recommendations.
 Segment based on purchase history and track VIPs.
 View your results and measure ROI.
-Grow your audience and sell more stuff with Facebook Ad Campaigns in Squalomail.
-Create personalized transactional messages—like shipping notifications, invoices, and more—directly through Squalomail.
+Grow your audience and sell more stuff with Facebook Ad Campaigns in Squalo.
+Create personalized transactional messages—like shipping notifications, invoices, and more—directly through Squalo.
 
 
 ## File Structure
@@ -30,15 +30,15 @@ Controller for above template. Also contains the logic to save the SQM API key a
 
 ## Install Instructions 
 
-To connect your PrestaShop store to a list in Squalomail, follow these steps.
+To connect your PrestaShop store to a list in Squalo, follow these steps.
 
 1. Log in to your PrestaShop back office.
 2. In the left navigation menu, click Modules and Services.
-3. In the Modules List section, search for Squalomail.
-4. Search for Squalomail for PrestaShop and click Install.
-5. On the Squalomail for PrestaShop configuration page, click Log in with Squalomail.
-6. Log in with your Squalomail credentials, and you’ll be redirected to the front page of your store. 
-7. Navigate back to the Modules List section, find Squalomail for PrestaShop, and click Configure.
-8. Create a new Squalomail list, or select an existing list in your Squalomail account, and click Save.
+3. In the Modules List section, search for Squalo.
+4. Search for Squalo for PrestaShop and click Install.
+5. On the Squalo for PrestaShop configuration page, click Log in with Squalo.
+6. Log in with your Squalo credentials, and you’ll be redirected to the front page of your store. 
+7. Navigate back to the Modules List section, find Squalo for PrestaShop, and click Configure.
+8. Create a new Squalo list, or select an existing list in your Squalo account, and click Save.
 
-All set! We’ll start syncing your PrestaShop customers to Squalomail. The time it takes for the sync to complete depends on the size of your list and the number of orders in your store.
+All set! We’ll start syncing your PrestaShop customers to Squalo. The time it takes for the sync to complete depends on the size of your list and the number of orders in your store.

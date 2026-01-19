@@ -22,7 +22,7 @@
     <div class="panel-body">
         <form>
             <h4>
-                {l s='Add Customers to your Store to track their orders and to view E-Commerce Data for your Squalomail lists and campaigns. Each Customer is connected to a Squalomail list member, so adding a Customer can also add or update a list member.' mod='squalomailmodule'}
+                {l s='Add Customers to your Store to track their orders and to view E-Commerce Data for your Squalo lists and campaigns. Each Customer is connected to a Squalo list member, so adding a Customer can also add or update a list member.' mod='squalomailmodule'}
             </h4>
             <br>
             {include file="./_radio-btns.tpl"}

@@ -88,7 +88,7 @@ class AdminSqualomailModuleBatchesController extends \PrestaChamps\SqualomailMod
             @Tools::deleteFile($tempFilename . '.tar');
             @Tools::deleteFile($tempFilename);
         } catch (Exception $exception) {
-            $this->errors[] = $this->l("Can't decode response");
+            $this->errors[] = $this->trans("Can't decode response");
         }
     }
 }

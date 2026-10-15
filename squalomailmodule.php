@@ -158,7 +158,7 @@ class Squalomailmodule extends Module
     {
         $this->name = 'squalomailmodule';
         $this->tab = 'administration';
-        $this->version = '2.0.8';
+        $this->version = '2.0.9';
         $this->author = 'Squalo';
         $this->need_instance = 1;
         $this->bootstrap = true;
@@ -189,7 +189,7 @@ class Squalomailmodule extends Module
         $tabRepository = new \PrestaChamps\PrestaShop\Tab\TabRepository($this->menus, 'squalomailmodule');
         $tabRepository->install();
 
-        return parent::install() &&
+        $installed = parent::install() &&
             // The moduleRoutes hook is necessary in order to load the autoloader
             $this->registerHook('moduleRoutes') &&
             $this->registerHook('displayFooter') &&
@@ -209,11 +209,30 @@ class Squalomailmodule extends Module
             $this->registerHook('displayAdminOrderContentOrder') &&
             $this->registerHook('displayAdminOrderTabOrder') &&
             $this->registerHook('displayBackOfficeTop') &&
-            $this->registerHook('actionFrontControllerSetMedia') &&
             $this->registerHook('actionObjectCartRuleUpdateAfter') &&
             $this->registerHook('displayFooterBefore') &&
             $this->registerHook('actionCustomerAccountAdd') &&
             $this->registerHook('actionCustomerAccountUpdate');
+
+        return $installed;
+    }
+
+    /**
+     * Verify the site script again whenever the module is switched back on
+     *
+     * @param bool $force_all
+     *
+     * @return bool
+     */
+    public function enable($force_all = false)
+    {
+        if (!parent::enable($force_all)) {
+            return false;
+        }
+
+        $this->verifySiteScript();
+
+        return true;
     }
 
     public function runUpgradeModule()
@@ -323,7 +342,11 @@ class Squalomailmodule extends Module
     }
 
     /**
-     * Display site SqualoMail site verification
+     * Render the SqualoMail tracking script in the front office footer
+     *
+     * Reads persisted configuration only. Whether a connected site exists is
+     * resolved by verifySiteScript() on module activation and after a store
+     * sync, so no API call happens while a customer waits for the page.
      *
      * @param $params
      *
@@ -331,62 +354,89 @@ class Squalomailmodule extends Module
      */
     public function hookDisplayFooter($params)
     {
-        if ($this->isApiKeySet()) {
-            try {
-                $result = $this->sendApiRequest("ecommerce/stores/{$this->context->shop->id}", 'GET');
-                if ($this->getApiClient()->success()) {
-                    $result = json_decode($result['body'], true);
-
-                    if (isset($result['connected_site'])) {
-                        $footer = $result['connected_site']['site_script']['fragment'];
-                        if (!Configuration::get(SqualomailModuleConfig::SQUALOMAIL_SCRIPT_VERIFIED)) {
-                            $site_id = $result['connected_site']['site_foreign_id'];
-                            (new \PrestaChamps\SqualomailModule\Commands\SiteVerifyCommand($this->apiClient, $site_id))
-                                ->execute();
-                            $this->sendApiRequest(
-                                "ecommerce/stores/{$this->context->shop->id}",
-                                'POST',
-                                array('is_syncing' => false)
-                            );
-                            Configuration::updateValue(SqualomailModuleConfig::SQUALOMAIL_SCRIPT_VERIFIED, true);
-                        }
-
-                        return $footer;
-                    }
-                }
-                PrestaShopLogger::addLog("[SQUALOMAIL] :{$this->getApiClient()->getLastError()}");
-            } catch (Exception $e) {
-                PrestaShopLogger::addLog("[SQUALOMAIL] :{$e->getMessage()}");
-            }
+        $site_script_url = Configuration::get(SqualomailModuleConfig::SQUALOMAIL_SITE_SCRIPT_URL);
+        if (!$this->isApiKeySet() || empty($site_script_url)) {
+            return '';
         }
-        return '';
+
+        // json_encode emits the quoted JS string literal, escaping included
+        $site_script = json_encode($site_script_url);
+
+        return "<script id=\"mcjs\">!function(c,h,i,m,p){m=c.createElement(h),p=c.getElementsByTagName(h)[0],m.async=1,m.src=i,p.parentNode.insertBefore(m,p)}(document,\"script\",$site_script);</script>";
     }
 
     /**
-     * @param $params
+     * Ask SqualoMail to verify the tracking script of the connected site
      *
-     * @return string
-     * @throws Exception
+     * This used to run on every front office request through
+     * actionFrontControllerSetMedia, which meant a blocking remote call per page
+     * view. It runs when the module is activated, after a store sync, and when
+     * the module configuration is saved.
+     *
+     * @return bool True when the site script is verified, now or already
      */
-    public function hookActionFrontControllerSetMedia($params)
+    public function verifySiteScript()
     {
-        if ($this->isApiKeySet()) {
-            $result = $this->getApiClient()->get("ecommerce/stores/{$this->context->shop->id}");
-            try {
-                if (!Configuration::get(SqualomailModuleConfig::SQUALOMAIL_SCRIPT_VERIFIED)) {
-                    $siteId = $result['connected_site']['site_foreign_id'];
-                    $this->sendApiRequest(
-                        "connected-sites/{$siteId}/actions/verify-script-installation",
-                        'POST'
-                    );
-                    Configuration::updateValue(SqualomailModuleConfig::SQUALOMAIL_SCRIPT_VERIFIED, true);
-                }
-                $this->context->controller->addJS($result['connected_site']['site_script']['url'], false);
-            } catch (Exception $exception) {
-                PrestaShopLogger::addLog("[SQUALOMAIL] :{$exception->getMessage()}");
-            }
+        if (!$this->isApiKeySet()) {
+            return false;
         }
-        return '';
+
+        // Same store id StoreSyncCommand writes: the API key, not the shop id
+        $storeId = Configuration::get(SqualomailModuleConfig::SQUALOMAIL_API_KEY);
+
+        try {
+            $result = $this->getApiClient()->get("ecommerce/stores/{$storeId}");
+            // A failed read must not wipe a script the footer is already rendering
+            if (!$this->getApiClient()->success() || !is_array($result)) {
+                return false;
+            }
+
+            $siteId = isset($result['connected_site']['site_foreign_id'])
+                ? $result['connected_site']['site_foreign_id']
+                : null;
+
+            // Drives hookDisplayFooter, so it has to follow the store both ways
+            Configuration::updateValue(
+                SqualomailModuleConfig::SQUALOMAIL_SITE_SCRIPT_URL,
+                isset($result['connected_site']['site_script']['url'])
+                    ? $result['connected_site']['site_script']['url']
+                    : ''
+            );
+
+            if (empty($siteId)) {
+                Configuration::updateValue(SqualomailModuleConfig::SQUALOMAIL_SCRIPT_VERIFIED, '0');
+
+                return false;
+            }
+
+            if (Configuration::get(SqualomailModuleConfig::SQUALOMAIL_SCRIPT_VERIFIED)) {
+                return true;
+            }
+
+            (new \PrestaChamps\SqualomailModule\Commands\SiteVerifyCommand($this->getApiClient(), $siteId))
+                ->execute();
+            $this->sendApiRequest(
+                "ecommerce/stores/{$storeId}",
+                'POST',
+                array('is_syncing' => false)
+            );
+            Configuration::updateValue(SqualomailModuleConfig::SQUALOMAIL_SCRIPT_VERIFIED, true);
+
+            return true;
+        } catch (Exception $exception) {
+            PrestaShopLogger::addLog("[SQUALOMAIL] :{$exception->getMessage()}");
+
+            return false;
+        }
+    }
+
+    /**
+     * Drop the cached tracking script so the footer stops rendering it
+     */
+    public function clearSiteScript()
+    {
+        Configuration::updateValue(SqualomailModuleConfig::SQUALOMAIL_SITE_SCRIPT_URL, '');
+        Configuration::updateValue(SqualomailModuleConfig::SQUALOMAIL_SCRIPT_VERIFIED, '0');
     }
 
     /**
@@ -878,6 +928,10 @@ class Squalomailmodule extends Module
 
     public function hookDisplayFooterBefore($params)
     {
+        if (!$this->isApiKeySet()) {
+            return;
+        }
+
         try {
             \PrestaChamps\SqualomailModule\Hooks\Display\FooterBefore::run(
                 $params,

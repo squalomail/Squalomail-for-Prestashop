@@ -78,10 +78,10 @@ class AdminSqualomailModuleWizardController extends ModuleAdminController
                 $this->context->controller->warnings[] = $this->module->l('Please select a shop');
             }
 
-            if (!Tools::usingSecureMode()) {
-                $this->content = '';
-                $this->context->controller->warnings[] = $this->module->l('Please use HTTPS for authenticating to Squalomail');
-            }
+//            if (!Tools::usingSecureMode()) {
+//                $this->content = '';
+//                $this->context->controller->warnings[] = $this->module->l('Please use HTTPS for authenticating to Squalomail');
+//            }
             parent::initContent();
         }
     }
@@ -337,10 +337,12 @@ class AdminSqualomailModuleWizardController extends ModuleAdminController
             $command->setMethod($command::SYNC_METHOD_POST);
             $command->execute();
             $command->setMethod($command::SYNC_METHOD_PATCH);
+            $result = $command->execute();
+            $this->module->verifySiteScript();
             $this->ajaxDie(array(
                 'hasError' => false,
                 'error' => null,
-                'result' => $command->execute(),
+                'result' => $result,
             ));
         } catch (Exception $exception) {
             $this->ajaxDie(
@@ -556,6 +558,7 @@ class AdminSqualomailModuleWizardController extends ModuleAdminController
                 'lists',
                 array('fields' => 'lists.name,lists.id', 'count' => 999)
             );
+
             if (!$lists || empty($lists)) {
                 \PrestaChamps\SqualomailModule\Factories\ListFactory::make(
                     $this->context->shop->name,
@@ -625,6 +628,13 @@ class AdminSqualomailModuleWizardController extends ModuleAdminController
         }
 
         http_response_code($statusCode);
+
+        if ((bool) version_compare(_PS_VERSION_, '9.0.0', '>=')) {
+            //@phpstan-ignore-next-line
+            parent::ajaxRender($value, $controller, $method);
+            exit;
+        }
+
         parent::ajaxDie($value, $controller, $method);
     }
 }

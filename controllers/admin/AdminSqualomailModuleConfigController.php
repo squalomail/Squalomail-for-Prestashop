@@ -68,6 +68,12 @@ class AdminSqualomailModuleConfigController extends ModuleAdminController
         Configuration::updateValue(SqualomailModuleConfig::SQUALOMAIL_SCRIPT_VERIFIED, '0');
         Configuration::loadConfiguration();
 
+        if (empty(Configuration::get(SqualomailModuleConfig::SQUALOMAIL_API_KEY))) {
+            $this->module->clearSiteScript();
+        } else {
+            $this->module->verifySiteScript();
+        }
+
         $this->confirmations[] = $this->trans('Configuration updated');
     }
 
@@ -83,6 +89,7 @@ class AdminSqualomailModuleConfigController extends ModuleAdminController
             $command->setMethod($command::SYNC_METHOD_DELETE);
             $command->setSyncMode($command::SYNC_MODE_REGULAR);
             $command->execute();
+            $this->module->clearSiteScript();
             $this->confirmations[] = $this->trans('E-commerce data has been deleted');
         } catch (Exception $exception) {
             $this->errors[] = "Error during deleting e-commerce data";

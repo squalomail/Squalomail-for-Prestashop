@@ -24,6 +24,8 @@ class SqualomailModuleConfig
 {
     const SQUALOMAIL_API_KEY = 'module-squalomailmoduleconfig-squalomail-api-key';
     const SQUALOMAIL_SCRIPT_VERIFIED = 'module-squalomailmoduleconfig-script-verified';
+    /** connected_site.site_script.url, cached so the front office never has to ask the API */
+    const SQUALOMAIL_SITE_SCRIPT_URL = 'module-squalomailmoduleconfig-site-script-url';
     const SQUALOMAIL_LIST_ID = 'module-squalomailmoduleconfig-list-id';
     const SQUALOMAIL_LIST_NAME = 'module-squalomailmoduleconfig-list-id';
 

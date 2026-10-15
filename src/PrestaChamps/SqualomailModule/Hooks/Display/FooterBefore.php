@@ -61,21 +61,29 @@ class FooterBefore
 
     public function newsletterBlockRegistration()
     {
+        // Runs on every footer render, so bail on the cheap check before
+        // asking the module repository whether a newsletter module is enabled
+        if (!Tools::isSubmit('submitNewsletter')) {
+            return;
+        }
+
         $subscriptionIsEnabled = Module::isEnabled('Ps_Emailsubscription')
             || Module::isEnabled('blocknewsletter');
-        if (Tools::isSubmit('submitNewsletter') && $subscriptionIsEnabled) {
-            $subscriberHash = md5(Tools::strtolower(Tools::getValue('email')));
-            $listId = $this->getListIdFromStore();
-            $this->squaloMail->put(
-                "/lists/{$listId}/members/{$subscriberHash}",
-                array(
-                    'email_address' => Tools::getValue('email'),
-                    'status'        => $this->getListRequiresDOI($listId)
-                        ? ListMemberFormatter::STATUS_PENDING
-                        : ListMemberFormatter::STATUS_SUBSCRIBED
-                )
-            );
+        if (!$subscriptionIsEnabled) {
+            return;
         }
+
+        $subscriberHash = md5(Tools::strtolower(Tools::getValue('email')));
+        $listId = $this->getListIdFromStore();
+        $this->squaloMail->put(
+            "/lists/{$listId}/members/{$subscriberHash}",
+            array(
+                'email_address' => Tools::getValue('email'),
+                'status'        => $this->getListRequiresDOI($listId)
+                    ? ListMemberFormatter::STATUS_PENDING
+                    : ListMemberFormatter::STATUS_SUBSCRIBED
+            )
+        );
     }
 
     /**

@@ -126,10 +126,16 @@ class AdminSqualomailModuleSyncController extends ModuleAdminController
             if ($method === 'delete') {
                 $service->setMethod($service::SYNC_METHOD_DELETE);
             }
+            $result = $service->execute();
+            if ($method === 'delete') {
+                $this->module->clearSiteScript();
+            } else {
+                $this->module->verifySiteScript();
+            }
             $this->ajaxDie(array(
                 'hasError' => false,
                 'error' => null,
-                'result' => $service->execute(),
+                'result' => $result,
             ));
         } catch (Exception $exception) {
             $this->ajaxDie(
@@ -147,47 +153,6 @@ class AdminSqualomailModuleSyncController extends ModuleAdminController
     /**
      * @throws Exception
      */
-    public function processPromoCodeSync()
-    {
-        try {
-            $method = Tools::getValue('method', 'post');
-            $items = $this->getCartRules();
-
-            $service = new \PrestaChamps\SqualomailModule\Commands\CartRuleSyncCommand(
-                $this->context,
-                $this->module->getApiClient(),
-                $items
-            );
-            if (Tools::getValue('syncMode', false) === 'batch') {
-                $service->setSyncMode($service::SYNC_MODE_BATCH);
-            }
-            if ($method === 'post') {
-                $service->setMethod($service::SYNC_METHOD_POST);
-            }
-            if ($method === 'patch') {
-                $service->setMethod($service::SYNC_METHOD_PATCH);
-            }
-            if ($method === 'delete') {
-                $service->setMethod($service::SYNC_METHOD_DELETE);
-            }
-            $this->ajaxDie(array(
-                'hasError' => false,
-                'error' => null,
-                'result' => $service->execute(),
-            ));
-        } catch (Exception $exception) {
-            $this->ajaxDie(
-                array(
-                    'hasError' => true,
-                    'error' => $this->module->getApiClient()->getLastResponse(),
-                ),
-                null,
-                null,
-                400
-            );
-        }
-    }
-
     public function processPromoCodeSync()
     {
         try {
@@ -358,6 +323,12 @@ class AdminSqualomailModuleSyncController extends ModuleAdminController
         }
 
         http_response_code($statusCode);
+        if ((bool) version_compare(_PS_VERSION_, '9.0.0', '>=')) {
+            //@phpstan-ignore-next-line
+            parent::ajaxRender($value, $controller, $method);
+            exit;
+        }
+
         parent::ajaxDie($value, $controller, $method);
     }
 
